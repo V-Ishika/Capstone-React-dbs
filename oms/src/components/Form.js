@@ -25,7 +25,7 @@ const expiry=''
 
 
 
-const [orderbook,setOrderBook]=useState({limitOrder:'true'})
+const [orderbook,setOrderBook]=useState({limitOrder:true})
 const [name,setName]=useState("")
 const [client,setClient]=useState({})
 const [clientStatus,setClientStatus]=useState(0)
@@ -47,7 +47,7 @@ const getClientByID=(event)=>{
         .then(response=>{
             console.log(response.data);
            setClient(response.data)
-           setOrderBook({...orderbook,clientID:event.target.value})
+           setOrderBook({...orderbook,clientId:event.target.value})
            setClientStatus(event.target.value.length)
            setName(response.data.custodian.custodianName)
            
@@ -70,7 +70,7 @@ const getInstrumentByID=(event)=>{
         .then(response=>{
             console.log(response.data);
            setInstrument(response.data)
-           setOrderBook({...orderbook,instrumentID:event.target.value})
+           setOrderBook({...orderbook,instrumentId:event.target.value})
           
             
         })
@@ -91,9 +91,10 @@ useEffect(()=>{console.log(orderbook)},[orderbook])
 useEffect(()=>{
     console.log(orderbook)
     console.log(submit)
-   if (submit===true)
-    axios.post(`http://localhost:8080/transaction/${orderbook}`).then(response=>console.log(response.data))
-    .catch(error=>console.log(error))
+   if (submit===true){
+   console.log("Request Sending")
+    axios.post('http://localhost:8080/transaction',orderbook).then(response=>console.log(response.data))
+    .catch(error=>console.log(error))}
 },[submit])
 
 const buyHandler=()=>{

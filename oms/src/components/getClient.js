@@ -9,6 +9,12 @@ import Paper from '@mui/material/Paper';
 
 
 export default function GetClient(props) {
+
+  console.log(props.client)
+  console.log(props.error)
+  console.log(props.status)
+ 
+
  
   const table=
     <TableContainer component={Paper}>
@@ -26,7 +32,7 @@ export default function GetClient(props) {
             <TableRow>
               <TableCell align="left">{props.client.clientId}</TableCell>
               <TableCell align="left">{props.client.clientName}</TableCell>
-              <TableCell align="left">{props.custodian.custodianName}</TableCell>
+            <TableCell align="left">{props.name}</TableCell>
              
             </TableRow>
           

@@ -11,7 +11,10 @@ import Paper from '@mui/material/Paper';
 
 
  const  GetInstrument=(props)=>{
-   
+
+    console.log(props.instrument)
+  console.log(props.error)
+  console.log(props.status)
   const table=
   <TableContainer component={Paper}>
     <Table sx={{ minWidth: 650 }} aria-label="simple table">

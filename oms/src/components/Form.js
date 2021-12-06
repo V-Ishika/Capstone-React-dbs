@@ -26,6 +26,7 @@ const expiry=''
 
 
 const [orderbook,setOrderBook]=useState({limitOrder:'true'})
+const [name,setName]=useState("")
 const [client,setClient]=useState({})
 const [clientStatus,setClientStatus]=useState(0)
 const [clientError,setClientError]=useState(false)
@@ -39,30 +40,30 @@ const getClientByID=(event)=>{
     
     if (event.target.value.length===6){
         console.log(event.target.value)
-        setClientStatus(event.target.value.length)
+  
         
         axios.get(`http://localhost:8080/client/${event.target.value}`)
         .then(response=>{
             console.log(response.data);
            setClient(response.data)
            setOrderBook({...orderbook,clientID:event.target.value})
-           setClientStatus(true)
+           setClientStatus(event.target.value.length)
+           setName(response.data.custodian.custodianName)
            
             
         })
         .catch(error=>setClientError(true))
+        setClientStatus(event.target.value.length)
     }
     
 }
 
-const clientDetails=()=>{
-    return !clientError && <GetClient client={client} custodian={client.custodian} error={clientError}/>
-}
+
 
 const getInstrumentByID=(event)=>{
     
     if (event.target.value.length===4){
-        setInstrumentStatus(event.target.value.length)
+        
         console.log(event.target.value)
         axios.get(`http://localhost:8080/instrument/${event.target.value}`)
         .then(response=>{
@@ -73,14 +74,13 @@ const getInstrumentByID=(event)=>{
             
         })
         .catch(error=>setInstrumentError(true))
+        setInstrumentStatus(event.target.value.length)
     }
 
     
 }
 
-const instrumentDetails=()=>{
-    return !instrumentError && <GetInstrument instrument={instrument} error={instrumentError}/>
-}
+
 
 
 console.log(instrument.instrumentName)
@@ -118,13 +118,13 @@ const form=<FormControl fullWidth >
 <TextField fullWidth label="Client ID" variant="outlined" focused required onChange={getClientByID}/><br/>
 </div>
 <div style={{marginBottom:20,marginTop:20}}>
-<GetClient client={client} custodian={client.custodian} error={clientError}/>
+<GetClient status={clientStatus} name={name} client={client} error={clientError}/>
 </div>
 <div style={{marginBottom:20,marginTop:20}}>
 <TextField fullWidth label="Instrument ID" variant="outlined" focused  required onChange={getInstrumentByID}/><br/>
 </div>
 <div style={{marginBottom:20,marginTop:20}}>
-<GetInstrument instrument={instrument} error={instrumentError}/>
+<GetInstrument status={instrumentStatus} instrument={instrument} error={instrumentError}/>
 </div>
 <div style={{marginBottom:0,marginTop:20}}>
 <TextField fullWidth label="Price" 

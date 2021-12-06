@@ -34,6 +34,7 @@ const [instrument,setInstrument]=useState({})
 const [instrumentStatus,setInstrumentStatus]=useState(0)
 const [instrumentError,setInstrumentError]=useState(false)
 const [orderDirection,setOrderDirection]=useState("")
+const [submit,setSubmit]=useState(false)
 
 
 const getClientByID=(event)=>{
@@ -87,6 +88,13 @@ console.log(instrument.instrumentName)
 //useEffect(()=>{setOrderBook({...orderbook,client})},[client])
 //useEffect(()=>{setOrderBook({...orderbook,instrument})},[instrument])
 useEffect(()=>{console.log(orderbook)},[orderbook])
+useEffect(()=>{
+    console.log(orderbook)
+    console.log(submit)
+   if (submit===true)
+    axios.post(`http://localhost:8080/transaction/${orderbook}`).then(response=>console.log(response.data))
+    .catch(error=>console.log(error))
+},[submit])
 
 const buyHandler=()=>{
   
@@ -174,9 +182,15 @@ onChange={(e)=>{setOrderBook({...orderbook,quantity:e.target.value})}}
 
 
 <div style ={{marginTop:20}}>
-<button id="buy" value="BUY" onClick={(e)=>{setOrderBook({...orderbook,orderDirection:e.target.value})}}
+<button id="buy" value="BUY" onClick={(e)=>
+{
+    setOrderBook({...orderbook,orderDirection:e.target.value});
+    setSubmit(true)
+    }
+    }
 >BUY</button>
-<button id="sell" value="SELL" style={{marginLeft:250}} onClick={(e)=>{setOrderBook({...orderbook,orderDirection:e.target.value})}}>SELL</button>
+<button id="sell" value="SELL" style={{marginLeft:250}} onClick={(e)=>{setOrderBook({...orderbook,orderDirection:e.target.value});
+setSubmit(true)}}>SELL</button>
 </div>
 
 
